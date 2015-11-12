@@ -1,4 +1,6 @@
-#Written by Chris Keeler on June 23rd, 2015
+#Written by Chris Keeler on
+	#June 23rd, 2015
+	#November 6th, 2015
 
 import sys
 from constants import *
@@ -49,12 +51,15 @@ class FSM():
 
 	def toString(self):
 		for s in self.states:
-			print s.label
-			transitionString = "["
-			for t in s.transitions:
-				transitionString+=t.label+":"+t.destination.label+", "
+			transitionString = s.label+": ["
 
-			transitionString = transitionString[:-1]+"]"
+			if len(s.transitions) > 0:
+				transitionString += s.transitions[0].label+":"+s.transitions[0].destination.label
+
+				for t in range(1,len(s.transitions)):
+					transitionString+=", "+s.transitions[t].label+":"+s.transitions[t].destination.label
+
+			transitionString += "]"
 			print transitionString
 			print
 
@@ -151,6 +156,11 @@ class Transition():
 	def __init__(self,_destination,_label):
 		self.destination = _destination
 		self.label = _label
+
+	def toString(self):
+		print self.label
+		print self.destination
+		print UNDERLINE_BREAK
 
 
 #PDAs are just like FSMs, but with a stack!
@@ -263,6 +273,7 @@ class PDA(FSM):
 		print "\tSize of stack is "+str(len(self.stack))
 		print
 		return (activeState.accepting and stringSuccess and len(self.stack)==0)
+
 
 
 #self.destination should be a State() object

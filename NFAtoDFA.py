@@ -1,13 +1,14 @@
+#Written by Chris Keeler on
+	#September 5th, 2015
+	#November 5th/6th 2015
+
 from fsm import *
+from constants import *
+from fsmTests import *
 from collections import OrderedDict
 
-DEBUG = True
-def debug(_s):
-	if DEBUG:
-		print _s
-
 #Converts a list of states into a string to be used as the merged state label.
-def statesToString(_stateList):
+def mergeStateLabels(_stateList):
 	sortedList = sorted(_stateList)
 
 	formatted = "{"+sortedList[0].label
@@ -125,7 +126,7 @@ def convertNFA(_nfa):
 				mergedStateList = makeCollectionUnique(destinationStateList)
 
 				#Create a label for the merged state we are creating
-				mergedStateLabel = statesToString(mergedStateList)
+				mergedStateLabel = mergeStateLabels(mergedStateList)
 
 				#If we have already added this state, then don't add it again!
 				if mergedStateLabel in memoizedStates:
@@ -164,79 +165,22 @@ def convertNFA(_nfa):
 	print "Finished conversion!"
 	return equivalentDFA
 
-def testOne():
-	one = State('1')
-	two = State('2')
-	three = State('3')
-	four = State('4', True)
-	five = State('5')
+#Takes an _nfa and converts it, while also outputting to the console some information regarding the conversion
+def convertAndPrint(_nfa):
+	_nfa.determineDeterminism()
+	_nfa.toString()
 
-	one.addTransition(Transition(two,'a'))
-	one.addTransition(Transition(three,'a'))
-
-	two.addTransition(Transition(three,'b'))
-
-	three.addTransition(Transition(two,'b'))
-	three.addTransition(Transition(four,'b'))
-
-	four.addTransition(Transition(five,'c'))
-
-	five.addTransition(Transition(four,'c'))
-	five.addTransition(Transition(five,'b'))
-
-	testNFA = FSM(['a','b','c'],one)
-
-	testNFA.addState(two)
-	testNFA.addState(three)
-	testNFA.addState(four)
-	testNFA.addState(five)
-
-	testNFA.determineDeterminism()
-
-	testNFA.toString()
-	dfa = convertNFA(testNFA)
+	if _nfa.deterministic:
+		dfa = _nfa
+	else:
+		dfa = convertNFA(_nfa)
 
 	print "###"
 	dfa.toString()
 
-def assignmentQuestion():
-	one = State('1',True)
-	two = State('2')
-	three = State('3')
-	four = State('4')
-	five = State('5')
 
-	one.addTransition(Transition(two,'a'))
-	one.addTransition(Transition(four,'a'))
+testFSMs = [testOne(), assignmentQuestion(), canonicalWorstCase(4)]
 
-	two.addTransition(Transition(two,'b'))
-	two.addTransition(Transition(three,'b'))
-	two.addTransition(Transition(four,'b'))
-
-	three.addTransition(Transition(five,'c'))
-
-	four.addTransition(Transition(two,'c'))
-	four.addTransition(Transition(five,'b'))
-
-	five.addTransition(Transition(one,'b'))
-	five.addTransition(Transition(two,'b'))
-
-	testNFA = FSM(['a','b','c'],one)
-
-	testNFA.addState(two)
-	testNFA.addState(three)
-	testNFA.addState(four)
-	testNFA.addState(five)
-
-	testNFA.determineDeterminism()
-
-	testNFA.toString()
-	dfa = convertNFA(testNFA)
-
-	print "###"
-	dfa.toString()
-
-#testOne()
-
-
-assignmentQuestion()
+for t in range(len(testFSMs)):
+	print "Converting new FSM:"
+	convertAndPrint(testFSMs[t])

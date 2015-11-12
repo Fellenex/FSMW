@@ -1,0 +1,27 @@
+fsm.py
+	class FSM():
+		def __init__(self,_alphabet=[],_startState=None):
+		def addState(self,_state):
+		def removeState(self,_state):
+		def determineDeterminism(self):
+		def toString(self):
+		def parseString(self,_string):
+
+	class State():
+		def __init__(self,_label,_accepting=False):
+		def addTransition(self,_transition):
+		def getTransitions(self):
+		def getCharTransitions(self, _char):
+	
+	class Transition():
+		def __init__(self,_destination,_label):
+
+	class PDA(FSM):
+		def __init__(self,_startState=None):
+		def parseString(self,_string):
+
+	class PDA_Transition(Transition):
+		def __init__(self,_destination,_label,_push,_pop):
+
+constants.py
+	def badFormat(spookyCharacter,charIndex):

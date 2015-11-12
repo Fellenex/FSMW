@@ -11,7 +11,7 @@ ALPHABETIC = '@'
 NUMERIC = '#'
 WHITESPACE = ' '
 
-
+UNDERLINE_BREAK = "____________________________________________"
 
 #Exits out of the parse when ill-formatted statements are found.
 #Parameters:
@@ -23,3 +23,8 @@ WHITESPACE = ' '
 def badFormat(spookyCharacter,charIndex):
 	print "Unexpected Symbol: '"+spookyCharacter+"' found at index "+str(charIndex)
 	#sys.exit(42)
+
+DEBUG = True
+def debug(_s):
+	if DEBUG:
+		print _s

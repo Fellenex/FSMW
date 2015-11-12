@@ -23,3 +23,17 @@ def checkAnswers(answerKey,testAnswers):
 			offenses+=1
 
 	return offenses
+
+def runTests(yourFSM,answerKeyFileName,testStringsFileName):
+	tests = getLines(testStringsFileName)
+	answerKey = getLines(answerKeyFileName)
+	testAnswers = []
+
+	for test in tests:
+		if yourFSM.parseString(test):
+			testAnswers.append('T')
+		else:
+			testAnswers.append('F')
+
+	score = checkAnswers(answerKey,testAnswers)
+	print "Score is: "+str(len(answerKey)-score)+"/"+str(len(answerKey))
